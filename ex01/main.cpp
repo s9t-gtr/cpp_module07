@@ -10,7 +10,8 @@ int main(){
     
     std::cout << "=================== char ===================" <<std::endl;
     iter(char_array, 5, func<char>);
-
+    
     std::cout << "=================== string ===================" <<std::endl;
     iter(string_array, 5, func<std::string>);
+    std::cout << std::endl;
 }

@@ -6,6 +6,7 @@
 template <typename T>
 void func(T elem){
    std::cout << elem << std::endl; 
+   std::cout <<"he" << std::endl;
 }
 
 template <typename T1, typename T2, typename T3>
@@ -14,6 +15,8 @@ void iter(T1 *array, T2 len, T3 (*f)(T1 elem)){
         f(array[i]);
     }
 }
+
+
 
 
 #endif

@@ -2,6 +2,7 @@
 # define __ARRAY_HPP_
 
 #include <iostream>
+#include <exception>
 
 template <typename T>
 class Array{
@@ -12,10 +13,14 @@ class Array{
         Array(const Array& other);
 
         Array& operator=(const Array& other);
-        T& operator[](int index);
+        T& operator[](long long index);
+        const T& operator[](long long index) const;
     public:
-        int size() const;
+        void outputElements() const;
+        unsigned int size() const;
     private:
+        void setValue(T& val1, T& val2);
+        const unsigned int array_size;
         T *array;
 };
 
@@ -25,13 +30,14 @@ class Array{
 template <typename T>
 Array<T>::Array(){
     std::cout << "Array: Default constructor called" << std::endl;
-    array = new T[1];
+    array = new T();
 }
 
 template <typename T>
-Array<T>::Array(unsigned int n){
+Array<T>::Array(unsigned int n): array_size(n){
     std::cout << "Array: argument n constructor called" << std::endl;
-    array = new T[n];
+    array = new T[n]();
+    //std::cout << *array << std::endl;
 }
 
 template <typename T>
@@ -41,7 +47,7 @@ Array<T>::~Array(){
 }
 
 template <typename T>
-Array<T>::Array(const Array& other): array(NULL){
+Array<T>::Array(const Array<T>& other): array_size(other.size()), array(new T[other.size()]){
     std::cout << "Array: copy constructor called" << std::endl;
     if(this != &other){
         *this = other;
@@ -49,15 +55,15 @@ Array<T>::Array(const Array& other): array(NULL){
 }
 
 template <typename T>
-size_t sizeOther(T *array);
-
-template <typename T>
-Array<T>& Array<T>::operator=(const Array& other){
+Array<T>& Array<T>::operator=(const Array<T>& other){
     if(this != &other){
         try{
-            T *p = new T[sizeOther(other.array)];
-            if(array != NULL)
-                delete [] array;
+            T *p = new T[other.size()](); 
+            for(unsigned int i = 0; i < other.size(); i++){
+                p[i] = other.array[i];
+            }
+            const_cast<unsigned int&>(array_size) = other.size();
+            delete [] array;
             array = p;
         }catch(std::bad_alloc&){
             std::cerr << "Error: new failed" << std::endl;
@@ -70,9 +76,16 @@ Array<T>& Array<T>::operator=(const Array& other){
             subject instructions
 ==============================================*/
 template <typename T>
-T& Array<T>::operator[](int index){
-    if(index < 0 || size() < index - 1)
-        throw std::exception();
+T& Array<T>::operator[](long long index){
+    if(index < 0 || static_cast<long long>(array_size) <= index)
+        throw std::out_of_range("Error: operator[] throw out_of_range");
+    return array[index];
+}       
+
+template <typename T>
+const T& Array<T>::operator[](long long index) const{
+    if(index < 0 || static_cast<long long>(array_size) <= index)
+        throw std::out_of_range("Error: operator[] throw out_of_range");
     return array[index];
 }       
 
@@ -80,22 +93,19 @@ T& Array<T>::operator[](int index){
             member functions
 ==============================================*/
 template <typename T>
-int Array<T>::size() const{
-    size_t i = 0;
-    while(array[i])
-        i++;
-    return i;
+unsigned int Array<T>::size() const{
+    return array_size;
 }
 
 /*==============================================
             utils function
 ==============================================*/
 template <typename T>
-size_t sizeOther(T *array){
-    size_t i = 0;
-    while(array[i])
-        i++;
-    return i;
+void Array<T>::outputElements() const{
+    for(size_t i = 0; i < array_size; i++)
+        std::cout << array[i] << " "; 
+    std::cout << std::endl;
 }
+
 
 #endif
