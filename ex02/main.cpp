@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Array.hpp"
+#include "Array.h"
 
 #define EMPTY_LINE std::cout << std::endl;
 static unsigned int ARRAY_SIZE = 5;
@@ -97,6 +97,7 @@ int main(int, char**)
         std::cout << "---------------- out of range test ----------------" << std::endl;
         try{
             numbers[-2] = 0;
+            
         }catch(const std::exception& e){
             std::cerr << e.what() << std::endl;;
         }
@@ -105,6 +106,14 @@ int main(int, char**)
         }catch(const std::exception& e){
             std::cerr << e.what() << std::endl;;
         }
+        // try{
+        //     Array<int> bigNumbers(UINT_MAX);
+        //     for (size_t i = 0; i < SIZE_MAX; i++)
+        //         bigNumbers[i] = std::rand();
+        //     numbers[429496725+1] = 0;
+        // }catch(const std::exception& e){
+        //     std::cerr << e.what() << std::endl;;
+        // }
     }
     EMPTY_LINE
 

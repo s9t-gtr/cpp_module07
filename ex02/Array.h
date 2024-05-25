@@ -1,5 +1,5 @@
-#ifndef __ARRAY_HPP_
-# define __ARRAY_HPP_
+#ifndef ARRAY_H
+# define ARRAY_H
 
 #include <iostream>
 #include <exception>
@@ -13,8 +13,8 @@ class Array{
         Array(const Array& other);
 
         Array& operator=(const Array& other);
-        T& operator[](long long index);
-        const T& operator[](long long index) const;
+        T& operator[](unsigned int index);
+        const T& operator[](unsigned int index) const;
     public:
         void outputElements() const;
         unsigned int size() const;
@@ -76,15 +76,15 @@ Array<T>& Array<T>::operator=(const Array<T>& other){
             subject instructions
 ==============================================*/
 template <typename T>
-T& Array<T>::operator[](long long index){
-    if(index < 0 || static_cast<long long>(array_size) <= index)
+T& Array<T>::operator[](unsigned int index){
+    if(array_size <= index)
         throw std::out_of_range("Error: operator[] throw out_of_range");
     return array[index];
 }       
 
 template <typename T>
-const T& Array<T>::operator[](long long index) const{
-    if(index < 0 || static_cast<long long>(array_size) <= index)
+const T& Array<T>::operator[](unsigned int index) const{
+    if(array_size <= index)
         throw std::out_of_range("Error: operator[] throw out_of_range");
     return array[index];
 }       
